@@ -24,13 +24,14 @@
           <div style="margin:10px">
             <h2>Snippets Shortcut</h2>
             <ul>
-              <li>Snippet Title</li>
+              <li v-for="snippet in snippetList"><span id="name" v-on:click="goElem(snippet.id)">[{{ snippet.language }}] {{ snippet.title }}</span> </li>
             </ul>
           </div>
         </v-flex>
         <v-flex xs7>
           <v-card style="margin-top:10px" v-for="snippet in snippetList">
             <v-card-title primary-title>
+              <a v-bind:id="snippet.id"></a>
               <h3 class="headline"> {{ snippet.title }}</h3>
             </v-card-title>
             <div style="margin: 10px 20px">
@@ -39,6 +40,8 @@
             <v-card-actions>
               <v-btn flat color="red" v-on:click="togglePutModal(snippet.id)">Update</v-btn>
               <v-btn flat color="gray" v-on:click="toggleDeleteModal(snippet.id)">Delete</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn flat color="red" v-on:click="goTop">Go Top</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -54,8 +57,8 @@
           </v-flex>
           <v-card-text>
             <p>Snippet</p>
-            <div style='width:100%;'>
-              <textarea style='width:100%; height: 300px; background-color=#efefef; padding:3px' v-model='postContents'></textarea>
+            <div style="width:100%;">
+              <textarea style="width:100%; height: 300px; background-color=#efefef; padding:3px" v-model="postContents"></textarea>
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -81,8 +84,8 @@
           </v-flex>
           <v-card-text>
             <p>Snippet</p>
-            <div style='width:100%;'>
-              <textarea style='width:100%; height:300px; background-color:#efefef; padding:3px;' v-model='putContents'></textarea>
+            <div style="width:100%;">
+              <textarea style="width:100%; height:300px; background-color:#efefef; padding:3px;" v-model="putContents"></textarea>
             </div>
           </v-card-text>
           <v-divider></v-divider>
@@ -191,6 +194,12 @@
         toggleDeleteModal: function(id) {
           this.id = id
           this.dialogDeleteFlag = !this.dialogDeleteFlag
+        },
+        goElem: function(id) {
+          document.getElementById(id).scrollIntoView(true)
+        },
+        goTop: function() {
+          document.getElementById("app").scrollIntoView(true)
         },
       },
     })
