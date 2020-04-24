@@ -9,6 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vuetify@1.5/dist/vuetify.js"></script>
+  <script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
   <title>Snippet App</title>
 </head>
 <body>
@@ -40,7 +41,7 @@
               </div>
             </v-card-title>
             <div style="margin: 10px 20px">
-              <textarea style="width:100%; height:300px; background-color: #efefef; padding: 3px;"> {{ snippet.contents }} </textarea>
+              <div v-html="showdown.makeHtml(snippet.contents)"></div>
             </div>
             <v-card-actions>
               <v-btn flat color="red" v-on:click="togglePutModal(snippet.id)">Update</v-btn>
@@ -148,8 +149,10 @@
           searchWord: '',
         }
       },
-      mounted () {
+      mounted: function() {
         this.listSnippet();
+        options = { headerLevelStart: 3, omitExtraWLInCodeBlocks: true, tables: true, simpleLineBreaks: true, simplifiedAutoLink: true }
+        this.showdown = new showdown.Converter(options)
       },
       methods: {
         listSnippet: function(){
